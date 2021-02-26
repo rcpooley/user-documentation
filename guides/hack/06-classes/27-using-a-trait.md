@@ -140,18 +140,18 @@ For constants, constants inherited from the parent class take precedence over co
 
 ```Traitparent.hack
 trait T {
-  const FOO = “trait”;
+  const FOO = "trait";
 }
 
 class B {
-  const FOO = “parent”;
+  const FOO = "parent";
 }
 
 class A extends B { use T; } 
 
 <<__EntryPoint>>
 function main() : void {
-  var_dump(A::FOO);
+  echo A::FOO;
 }
 ``` 
 
@@ -159,37 +159,38 @@ If multiple used traits declare the same constant, the constant inherited from t
 
 ```Traitmultiple.hack
 trait T1 {
-  const FOO = “one”;
+  const FOO = "one";
 }
 
 trait T2 {
-  const FOO = “two”;
+  const FOO = "two";
 }
 
 class A { use T1, T2; }
 
 <<__EntryPoint>>
 function main() : void {
-  var_dump(A::FOO);
+  echo A::FOO;
 }
 ``` 
 
 Finally, constants inherited from interfaces declared on the class conflict with other inherited constants, including constants declared on traits.
 
-```Traitconflict.hack
+```
 trait T {
-  const FOO = “trait”;
+  const FOO = "trait";
 }
 
 interface I {
-  const FOO = “interface”;
+  const FOO = "interface";
 }
 
 class A implements I { use T; } 
 
+// Typing[4340] Non-abstract constants defined in an interface cannot conflict with other inherited constants.
 <<__EntryPoint>>
 function main() : void {
-  var_dump(A::FOO);
+  echo A::FOO; 
 }
 ``` 
 
@@ -197,19 +198,19 @@ The single exception to this rule are constants inherited from traits via interf
 
 ```Traitinterface.hack
 interface I1 {
-  const FOO = “one”;
+  const FOO = "one";
 }
 
 trait T implements I1 {}
 
 interface I {
-  const FOO = “two”;
+  const FOO = "two";
 }
 
 class A implements I { use T; } 
 
 <<__EntryPoint>>
 function main() : void {
-  var_dump(A::FOO);
+  echo A::FOO;
 }
 ``` 
